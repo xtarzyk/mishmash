@@ -1,0 +1,102 @@
+body
+    margin: 0
+    padding: 0
+    box-sizing: border-box
+    background: #243535
+
+div
+    display: flex
+
+#app
+    flex-direction: column
+    height: 100vh
+    
+.header
+    flex-direction: column
+    align-items: center
+    color: white
+    background: #00642d
+    margin: 20px
+    padding: 20px
+    border-radius: 25px
+
+    &__title
+        font-size: 26px
+        letter-spacing: 2px
+
+    &__interface
+        background: #243535
+        border-radius: 25px
+
+    &__interface button
+        margin: 10px
+        padding: 20px
+        width: 150px
+        color: white
+        background: #4e9321
+        border: none
+        border-radius: 25px
+        font-size: 20px
+        letter-spacing: 1px
+
+    &__interface button:hover
+        background: #4e93217e
+        cursor: pointer
+
+.content
+    flex-direction: column
+    background: #00642d
+    color: white
+    border-radius: 25px
+    margin: 20px
+    padding: 20px
+    height: 100%
+
+    &__input
+        max-height: 30px
+        margin: 15px
+        padding: 5px
+
+    &__list
+        flex-direction: column
+        margin: 20px
+        font-size: 24px
+
+    &__list-item
+        align-items: center
+        justify-content: space-between
+        width: 300px
+        margin: 10px 0
+        background: #4e9321
+        border-radius: 15px
+        padding: 10px
+
+    &__list-item span
+        background: #243535
+        border-radius: 15px
+
+    &__list-item i
+        margin: 10px
+        cursor: pointer
+
+    &__list-item i:hover
+        color: #4e9321
+
+.adding-btn
+    position: absolute
+    display: flex
+    justify-content: center
+    align-items: center
+    bottom: 40px
+    right: 40px
+    width: 50px
+    height: 50px
+    font-size: 40px
+    border: 10px solid #243535
+    border-radius: 50%
+    color: white
+    background: #4e9321
+
+.adding-btn:hover
+    background: #356714
+    cursor: pointer
