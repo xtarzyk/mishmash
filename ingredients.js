@@ -4,7 +4,7 @@ const ingredientsSet = new Set()
 // ingredients.add(setIng)
 const createSpanBtns = () => {
     const $pencilIcon = $('<i>').addClass('fa-solid fa-pencil')
-    const $trashIcon = $('<i>').addClass('fa-solid fa-trash-can ing-can')
+    const $trashIcon = $('<i>').addClass('fa-solid fa-trash-can')
     
     $trashIcon.click(event => {
         removeIngredient(event)
