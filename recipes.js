@@ -39,8 +39,8 @@ const selectIng = event => {
 
 const createRecipe = () => {
     if(selectedIngredients.length === 0) {
+
         return
     }
     const $recipesList = $('<div>').addClass('content__recipes-list').appendTo('.content')
-    
 }

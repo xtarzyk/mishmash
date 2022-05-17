@@ -1,7 +1,5 @@
 const ingredientsSet = new Set()
-// ingredients = localStorage.getItem('ingredients')
 
-// ingredients.add(setIng)
 const createSpanBtns = () => {
     const $pencilIcon = $('<i>').addClass('fa-solid fa-pencil')
     const $trashIcon = $('<i>').addClass('fa-solid fa-trash-can ing-can')
@@ -9,11 +7,9 @@ const createSpanBtns = () => {
     $trashIcon.click(event => {
         removeIngredient(event)
         $(event.target).parentsUntil($('.content__list')).remove()
-      })
-
-    $pencilIcon.click(event => {
-        editIngredient(event)
     })
+
+    $pencilIcon.click(editIngredient)
     
     return $('<span>').append($pencilIcon, $trashIcon)
 }
@@ -21,6 +17,7 @@ const createSpanBtns = () => {
 export const getLocalStorageData = () => {
     if (localStorage.getItem('ingredients') !== null) {
         const receivedIngredients = localStorage.getItem('ingredients').split(',')
+        
         console.log(receivedIngredients)
         receivedIngredients.forEach(ing => {
             ingredientsSet.add(ing)
