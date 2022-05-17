@@ -1,4 +1,4 @@
-import { createIngredients, createIngsListFromLocalStorage } from './ingredients'
+import { createIngredients, createIngredientsListFromLocalStorage } from './ingredients'
 import { showIngredients } from './recipes'
 
 const $input = $('<input type="text">').addClass('content__input')
@@ -26,7 +26,7 @@ $('.header__interface-ingredients').click(() => {
   $addingBtn.off()
   $addingBtn.click(createIngredientsInput)
   $('.content__ingredients-list').remove()
-  createIngsListFromLocalStorage()
+  createIngredientsListFromLocalStorage()
 })
 
 $('.header__interface-recipes').click(() => {

@@ -12,10 +12,10 @@ export const showIngredients = () => {
     const receivedIngredients = Storage.get()
     const $ingredientList = $('<div>').addClass('content__ingredients-list').appendTo('.content')
     
-    receivedIngredients.forEach(ing => {
+    receivedIngredients.forEach(ingredient => {
         $('<div>')
             .addClass('content__ingredients-list-item')
-            .text(ing)
+            .text(ingredient)
             .click(selectIng)
             .appendTo($ingredientList)
     })
@@ -40,7 +40,7 @@ const createRecipe = () => {
     }
     const $recipesList = $('<div>').addClass('content__recipes-list').appendTo('.content')
 
-    selectedIngredients.forEach(ing => {
+    selectedIngredients.forEach(ingredient => {
 
     })
 }

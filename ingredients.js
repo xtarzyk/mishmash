@@ -15,12 +15,12 @@ const createSpanBtns = () => {
     return $('<span>').append($pencilIcon, $trashIcon)
 }
 
-export const createIngsListFromLocalStorage = () => {
+export const createIngredientsListFromLocalStorage = () => {
     const receivedIngredients = Storage.get('ingredients')
 
     console.log(receivedIngredients)
-    receivedIngredients.forEach(ing => {
-        ingredientsSet.add(ing)
+    receivedIngredients.forEach(ingredient => {
+        ingredientsSet.add(ingredient)
         createIngredients()
     })
 }
@@ -74,4 +74,4 @@ const editIngredient = event => {
     })
 }
 
-createIngsListFromLocalStorage()
+createIngredientsListFromLocalStorage()
