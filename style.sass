@@ -33,14 +33,14 @@ div
         padding: 20px
         width: 150px
         color: white
-        background: #4e9321
+        background: #4e93217e
         border: none
         border-radius: 25px
         font-size: 20px
         letter-spacing: 1px
 
     &__interface button:hover
-        background: #4e93217e
+        background: #4e9321
         cursor: pointer
 
 .content
@@ -58,7 +58,7 @@ div
         padding: 5px
 
     &__list
-        flex-direction: column
+        flex-direction: column-reverse
         flex-wrap: wrap
         margin: 20px
         font-size: 24px
@@ -84,7 +84,7 @@ div
         color: #4e9321
 
     &__ingredients-list
-        margin: 20px
+        // margin: 20px
         font-size: 24px
         flex-wrap: wrap
 
@@ -98,6 +98,11 @@ div
     &__ingredients-list-item:hover
         background: #356714
 
+    &__recipes-list
+        margin: 20px
+        flex-direction: column
+
+    
 .adding-btn
     position: absolute
     display: flex
