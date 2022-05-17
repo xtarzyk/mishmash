@@ -1,6 +1,5 @@
 import { Storage } from './utils'
 
-let selectedIngredients = []
 let recipes = []
 
 const createTrashButton = () => {
@@ -15,7 +14,7 @@ const createTrashButton = () => {
     return $('<span>').append($trashIcon)
 }
 
-const addRecipeIngredients = (array, $recipe) => {
+const addRecipeChildren = (array, $recipe) => {
     const $trashButton = createTrashButton()
     $trashButton.appendTo($recipe)
 
@@ -44,37 +43,11 @@ export const createRecipesFromLocalStorage = () => {
             .appendTo('.content__recipes-list')
         
         $('<h2>').text(`${Object.keys(recipe)}`).appendTo($recipeDiv)
-        addRecipeIngredients(Object.values(recipe), $recipeDiv)
+        addRecipeChildren(Object.values(recipe), $recipeDiv)
     })
 }
 
-export const showIngredients = () => {
-    const receivedIngredients = Storage.get('ingredients')
-    const $ingredientList = $('<div>').addClass('content__ingredients-list').appendTo('.content__list')
-    
-    receivedIngredients.forEach(ingredient => {
-        $('<div>')
-            .addClass('content__ingredients-list-item')
-            .text(ingredient)
-            .click(selectIngredient)
-            .appendTo($ingredientList)
-    })
-}
-
-const selectIngredient = event => {
-    if (selectedIngredients.includes($(event.target).text())) {
-        selectedIngredients = selectedIngredients.filter(ing => !ing.includes($(event.target).text()))
-        $(event.target).css('background', '#4e9321')
-        
-        return
-    }
-
-    $(event.target).css('background', '#243535')
-    selectedIngredients = selectedIngredients.concat($(event.target).text())
-    console.log(selectedIngredients)
-}
-
-export const createRecipe = () => {
+export const createRecipe = selectedIngredients => {
     if(selectedIngredients.length === 0) {
         return
     }
@@ -89,5 +62,5 @@ export const createRecipe = () => {
     Storage.set('recipes', recipes)
     $('<h2>').text($recipeName).appendTo($recipe)
 
-    addRecipeIngredients(selectedIngredients ,$recipe)
+    addRecipeChildren(selectedIngredients ,$recipe)
 }

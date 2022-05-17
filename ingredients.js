@@ -18,7 +18,6 @@ const createSpanBtns = () => {
 export const createIngredientsListFromLocalStorage = () => {
     const receivedIngredients = Storage.get('ingredients')
 
-    // console.log(receivedIngredients)
     receivedIngredients.forEach(ingredient => {
         ingredientsSet.add(ingredient)
         createIngredients()
@@ -29,7 +28,6 @@ export const updateIngredientsList = () => {
     ingredientsSet.delete(undefined)
     ingredientsSet.delete(null)
     Storage.set('ingredients', Array.from(ingredientsSet))
-    // console.log(ingredientsSet)
     $('.content__list').remove()
     $('<div>').addClass('content__list').appendTo('.content')
 }
@@ -41,7 +39,6 @@ export const createIngredients = () => {
     ingredientsSet.forEach(text => {
         const $newListItem = $('<div>').addClass('content__list-item')
         const $spanBtns = createSpanBtns()
-        // console.log(text)
         $newListItem
             .text(text)
             .append($spanBtns)
@@ -51,9 +48,9 @@ export const createIngredients = () => {
 
 const removeIngredient = event => {
     const selectedItem = $(event.target).closest('div').text()
+    
     ingredientsSet.delete(selectedItem)
     Storage.set('ingredients', Array.from(ingredientsSet))
-    // console.log(ingredientsSet)
 }
 
 const editIngredient = event => {
