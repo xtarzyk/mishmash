@@ -1,4 +1,4 @@
-import { getLocalStorageData, updateLocalStorage } from './utils'
+import { Storage } from './utils'
 
 const ingredientsSet = new Set()
 
@@ -16,7 +16,7 @@ const createSpanBtns = () => {
 }
 
 export const createIngsListFromLocalStorage = () => {
-    const receivedIngredients = getLocalStorageData()
+    const receivedIngredients = Storage.get('ingredients')
 
     console.log(receivedIngredients)
     receivedIngredients.forEach(ing => {
@@ -26,9 +26,9 @@ export const createIngsListFromLocalStorage = () => {
 }
 
 export const updateIngredientsList = () => {
-    ingredientsSet.delete('')
     ingredientsSet.delete(undefined)
-    updateLocalStorage('ingredients', Array.from(ingredientsSet))
+    ingredientsSet.delete(null)
+    Storage.set('ingredients', Array.from(ingredientsSet))
     console.log(ingredientsSet)
     $('.content__list').remove()
     $('<div>').addClass('content__list').appendTo('.content')
@@ -52,7 +52,7 @@ export const createIngredients = () => {
 const removeIngredient = event => {
     const selectedItem = $(event.target).closest('div').text()
     ingredientsSet.delete(selectedItem)
-    updateLocalStorage('ingredients', Array.from(ingredientsSet))
+    Storage.set('ingredients', Array.from(ingredientsSet))
     console.log(ingredientsSet)
 }
 
@@ -70,7 +70,7 @@ const editIngredient = event => {
             .append($spanBtns)
 
         ingredientsSet.add(editionEvent.target.value)
-        updateLocalStorage('ingredients', Array.from(ingredientsSet))
+        Storage.set('ingredients', Array.from(ingredientsSet))
     })
 }
 

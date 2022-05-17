@@ -1,4 +1,4 @@
-import { getLocalStorageData } from './utils'
+import { Storage } from './utils'
 
 let selectedIngredients = []
 
@@ -9,7 +9,7 @@ const createTrashBtn = () => {
 }
 
 export const showIngredients = () => {
-    const receivedIngredients = getLocalStorageData()
+    const receivedIngredients = Storage.get()
     const $ingredientList = $('<div>').addClass('content__ingredients-list').appendTo('.content')
     
     receivedIngredients.forEach(ing => {
@@ -39,4 +39,8 @@ const createRecipe = () => {
         return
     }
     const $recipesList = $('<div>').addClass('content__recipes-list').appendTo('.content')
+
+    selectedIngredients.forEach(ing => {
+
+    })
 }

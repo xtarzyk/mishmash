@@ -1,11 +1,19 @@
-export const getLocalStorageData = () => {
-    if (localStorage.getItem('ingredients') !== null) {
-        const receivedIngredients = localStorage.getItem('ingredients').split(',')
+export const Storage = {
+    get(key) {
+        if (localStorage.getItem('ingredients') !== null) {
+            const data = localStorage.getItem(key)
 
-        return receivedIngredients
+            return JSON.parse(data)
+        }
+    },
+    set(key, data) {
+        if (typeof data !== 'string') {
+            return localStorage.setItem(key, JSON.stringify(data))
+        }
+
+        localStorage.setItem(key, data)
+    },
+    delete(key) {
+
     }
-}
-
-export const updateLocalStorage = (key, data) => {
-    localStorage.setItem(key, data)
 }
