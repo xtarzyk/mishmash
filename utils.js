@@ -1,10 +1,10 @@
 export const Storage = {
     get(key) {
-        if (localStorage.getItem('ingredients') !== null) {
+        // if (localStorage.getItem('ingredients') !== null && localStorage.getItem('recipes') !== null){
             const data = localStorage.getItem(key)
 
             return JSON.parse(data)
-        }
+        // }
     },
     set(key, data) {
         if (typeof data !== 'string') {

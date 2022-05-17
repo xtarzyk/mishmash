@@ -16,7 +16,7 @@ const createRecipesInput = () => {
   $('.content__header').append($input.attr('placeholder', 'Add recipes...'))
   $input.change(() => {
     createRecipe()
-    $input.val('')  
+    $input.val('')
   })
   showIngredients()
 }

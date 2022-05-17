@@ -7,12 +7,11 @@ const createTrashButton = () => {
     const $trashIcon = $('<i>').addClass('fa-solid fa-trash-can')
     
     $trashIcon.click(event => {
-        console.log($(event.target).siblings('h2').text())
-        recipes = recipes.filter(recipe => Object.keys(recipe) !== $(event.target).siblings('h2').text())
-        console.log(recipes)
+        recipes = recipes.filter(recipe => !Object.keys(recipe).includes($(event.target).parent().prev().text()))
         Storage.set('recipes', recipes)
         $(event.target).parentsUntil($('.content__recipes-list')).remove()
     })
+
     return $('<span>').append($trashIcon)
 }
 
@@ -30,10 +29,15 @@ const addRecipeIngredients = (array, $recipe) => {
 }
 
 export const createRecipesFromLocalStorage = () => {
+    if (localStorage.getItem('recipes') === null) {
+        return
+    }
+
     const receivedRecipes = Storage.get('recipes')
-    
+
+    recipes.length = 0
     recipes = recipes.concat(receivedRecipes)
-    
+    console.log(recipes)
     recipes.forEach(recipe => {
         const $recipeDiv = $('<div>')
             .addClass('content__recipes-list-item')
@@ -64,6 +68,7 @@ const selectIngredient = event => {
         
         return
     }
+
     $(event.target).css('background', '#243535')
     selectedIngredients = selectedIngredients.concat($(event.target).text())
     console.log(selectedIngredients)
@@ -85,5 +90,4 @@ export const createRecipe = () => {
     $('<h2>').text($recipeName).appendTo($recipe)
 
     addRecipeIngredients(selectedIngredients ,$recipe)
-    $('<div>').addClass('content__list').appendTo('.content')
 }
