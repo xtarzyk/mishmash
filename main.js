@@ -1,5 +1,5 @@
-import { createIngredients, getLocalStorageData } from './ingredients'
-import { getIngredients } from './recipes'
+import { createIngredients, createIngsListFromLocalStorage } from './ingredients'
+import { showIngredients } from './recipes'
 
 const $input = $('<input type="text">').addClass('content__input')
 const $addingBtn = $('<span>').text('+').addClass('adding-btn')
@@ -10,12 +10,11 @@ const createIngredientsInput = () => {
     createIngredients()
     $input.val('')
   })
-
 }
 
 const createRecipesInput = () => {
   $('.content__header').append($input.attr('placeholder', 'Add recipes...'))
-  getIngredients()
+  showIngredients()
 }
 
 $('.content__header').append($addingBtn)
@@ -27,7 +26,7 @@ $('.header__interface-ingredients').click(() => {
   $addingBtn.off()
   $addingBtn.click(createIngredientsInput)
   $('.content__ingredients-list').remove()
-  getLocalStorageData()
+  createIngsListFromLocalStorage()
 })
 
 $('.header__interface-recipes').click(() => {

@@ -1,3 +1,5 @@
+import { getLocalStorageData, updateLocalStorage } from './utils'
+
 const ingredientsSet = new Set()
 
 const createSpanBtns = () => {
@@ -8,28 +10,25 @@ const createSpanBtns = () => {
         removeIngredient(event)
         $(event.target).parentsUntil($('.content__list')).remove()
     })
-
     $pencilIcon.click(editIngredient)
     
     return $('<span>').append($pencilIcon, $trashIcon)
 }
 
-export const getLocalStorageData = () => {
-    if (localStorage.getItem('ingredients') !== null) {
-        const receivedIngredients = localStorage.getItem('ingredients').split(',')
-        
-        console.log(receivedIngredients)
-        receivedIngredients.forEach(ing => {
-            ingredientsSet.add(ing)
-            createIngredients()
-        })
-    }
+export const createIngsListFromLocalStorage = () => {
+    const receivedIngredients = getLocalStorageData()
+
+    console.log(receivedIngredients)
+    receivedIngredients.forEach(ing => {
+        ingredientsSet.add(ing)
+        createIngredients()
+    })
 }
 
 export const updateIngredientsList = () => {
     ingredientsSet.delete('')
     ingredientsSet.delete(undefined)
-    localStorage.setItem('ingredients', Array.from(ingredientsSet))
+    updateLocalStorage('ingredients', Array.from(ingredientsSet))
     console.log(ingredientsSet)
     $('.content__list').remove()
     $('<div>').addClass('content__list').appendTo('.content')
@@ -53,7 +52,7 @@ export const createIngredients = () => {
 const removeIngredient = event => {
     const selectedItem = $(event.target).closest('div').text()
     ingredientsSet.delete(selectedItem)
-    localStorage.setItem('ingredients', Array.from(ingredientsSet))
+    updateLocalStorage('ingredients', Array.from(ingredientsSet))
     console.log(ingredientsSet)
 }
 
@@ -71,8 +70,8 @@ const editIngredient = event => {
             .append($spanBtns)
 
         ingredientsSet.add(editionEvent.target.value)
-        localStorage.setItem('ingredients', Array.from(ingredientsSet))
+        updateLocalStorage('ingredients', Array.from(ingredientsSet))
     })
 }
 
-getLocalStorageData()
+createIngsListFromLocalStorage()
