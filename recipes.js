@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid'
 import { Storage } from './utils'
 
 let recipes = []
@@ -43,7 +44,7 @@ export const createRecipesFromLocalStorage = () => {
             .appendTo('.content__recipes-list')
         
         $('<h2>').text(`${Object.keys(recipe)}`).appendTo($recipeDiv)
-        addRecipeChildren(Object.values(recipe), $recipeDiv)
+        addRecipeChildren(recipe.selectedIngredients, $recipeDiv)
     })
 }
 
@@ -53,7 +54,7 @@ export const createRecipe = selectedIngredients => {
     }
 
     const $recipeName = $('.content__input').val()
-    const newRecipe = { [$recipeName]: selectedIngredients }
+    const newRecipe = { id: uuidv4(), [$recipeName]: selectedIngredients }
     const $recipe = $('<div>')
         .addClass('content__recipes-list-item')
         .appendTo('.content__recipes-list')
