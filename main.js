@@ -44,7 +44,7 @@ const selectIngredient = event => {
     $(event.target).css('background', '#4e9321')
     if (selectedView === '.header__interface-mishmash') {
       $('.content__recipes-list').children().remove()
-      // showRecipes(selectedIngredients)
+      showRecipes(selectedIngredients)
     }
     return
   }

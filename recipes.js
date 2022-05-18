@@ -33,18 +33,19 @@ export const createRecipesFromLocalStorage = () => {
         return
     }
 
+    const recipeIndex = 1
     const receivedRecipes = Storage.get('recipes')
 
     recipes.length = 0
     recipes = recipes.concat(receivedRecipes)
-    console.log(recipes)
+    // console.log(recipes)
     recipes.forEach(recipe => {
         const $recipeDiv = $('<div>')
             .addClass('content__recipes-list-item')
             .appendTo('.content__recipes-list')
         
-        $('<h2>').text(`${Object.keys(recipe)}`).appendTo($recipeDiv)
-        addRecipeChildren(recipe.selectedIngredients, $recipeDiv)
+        $('<h2>').text(`${Object.keys(recipe)[recipeIndex]}`).appendTo($recipeDiv)
+        addRecipeChildren(Object.values(recipe)[recipeIndex], $recipeDiv)
     })
 }
 
