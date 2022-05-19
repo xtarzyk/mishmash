@@ -16,8 +16,8 @@ const createSpanBtns = () => {
 }
 
 export const createIngredientsListFromLocalStorage = () => {
-    const receivedIngredients: Array<string> = Storage.get('ingredients')
-
+    const receivedIngredients = Storage.get<string[]>('ingredients')
+    console.log(receivedIngredients)
     receivedIngredients.forEach(ingredient => {
         ingredientsSet.add(ingredient)
         createIngredients()
@@ -33,9 +33,9 @@ export const updateIngredientsList = () => {
 }
 
 export const createIngredients = () => {
-    const $newValue = $('.content__input').val() as string
+    const newValue = $('.content__input').val() as string
 
-    ingredientsSet.add($newValue)
+    ingredientsSet.add(newValue)
     updateIngredientsList()
 
     ingredientsSet.forEach(text => {

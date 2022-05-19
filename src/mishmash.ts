@@ -7,12 +7,14 @@ export const showRecipes = (selectedIngredients: string[]) => {
     
     let result: Object
     const recipesIndex: number = 1
-    const receivedRecipes: Array<Object> = Storage.get('recipes')
+    const receivedRecipes = Storage.get<Array<Object>>('recipes')
 
     result = receivedRecipes.find((recipe: Object) => {
-        const recipeIngredients: Array<[]> = Object.values(recipe)[recipesIndex]
+        const recipeIngredients = Object.values(recipe)[recipesIndex]
 
-        return recipeIngredients.flat().every(ingredient => selectedIngredients.includes(ingredient) && recipeIngredients.flat().length === selectedIngredients.length)
+        return recipeIngredients
+            .flat()
+            .every(ingredient => selectedIngredients.includes(ingredient) && recipeIngredients.flat().length === selectedIngredients.length)
     })
 
     if (result !== undefined) {

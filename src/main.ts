@@ -26,7 +26,7 @@ const createRecipesInput = () => {
 }
 
 const showIngredients = () => {
-  const receivedIngredients = Storage.get('ingredients')
+  const receivedIngredients = Storage.get<string[]>('ingredients')
   const $ingredientList = $('<div>').addClass('content__ingredients-list').appendTo('.content__list')
   
   receivedIngredients.forEach(ingredient => {
@@ -38,7 +38,7 @@ const showIngredients = () => {
   })
 }
 
-const selectIngredient = event => {
+const selectIngredient = (event: JQuery.ClickEvent) => {
   if (selectedIngredients.includes($(event.target).text())) {
     selectedIngredients = selectedIngredients.filter(ing => !ing.includes($(event.target).text()))
     $(event.target).css('background', '#4e9321')
