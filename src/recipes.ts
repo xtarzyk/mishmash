@@ -33,8 +33,8 @@ export const createRecipesFromLocalStorage = () => {
         return
     }
 
-    const recipeIndex = 1
-    const receivedRecipes = Storage.get('recipes')
+    const recipeIndex: number = 1
+    const receivedRecipes: Array<Object> = Storage.get('recipes')
 
     recipes.length = 0
     recipes = recipes.concat(receivedRecipes)
