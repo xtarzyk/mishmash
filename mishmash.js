@@ -11,13 +11,10 @@ export const showRecipes = selectedIngredients => {
     const recipesIndex = 1
     const receivedRecipes = Storage.get('recipes')
 
-    result = receivedRecipes.find(ingredientsArr => Object.values(ingredientsArr)[recipesIndex].flat().every((value) => selectedIngredients.includes(value)))
-        // if (checkIngredients(ingredientsArr, selectedIngredients)) {
-        //     console.log('Hurray!')
-        //     return $('<h2>').text(`${Object.keys(ingredientsArr)}`).appendTo('.content__recipes-list')
+    result = receivedRecipes.find(ingredientsArr => Object.values(ingredientsArr)[recipesIndex]
+        .flat()
+        .every((value) => selectedIngredients.includes(value) && Object.values(ingredientsArr)[recipesIndex].flat().length === selectedIngredients.length))
 
-        // }
-        // console.log('checkIngredients', checkIngredients(result, selectedIngredients))
     if (result !== undefined) {
         console.log('result', result)
         $('.content__recipes-list').children().remove()
