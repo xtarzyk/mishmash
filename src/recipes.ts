@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid'
 import { Storage } from './utils'
 
-let recipes = []
+let recipes: Array<Object> = []
 
 const createTrashButton = () => {
     const $trashIcon = $('<i>').addClass('fa-solid fa-trash-can')
@@ -15,7 +15,7 @@ const createTrashButton = () => {
     return $('<span>').append($trashIcon)
 }
 
-const addRecipeChildren = (array, $recipe) => {
+const addRecipeChildren = (array: string[], $recipe: JQuery<HTMLElement>) => {
     const $trashButton = createTrashButton()
     $trashButton.appendTo($recipe)
 
@@ -38,7 +38,7 @@ export const createRecipesFromLocalStorage = () => {
 
     recipes.length = 0
     recipes = recipes.concat(receivedRecipes)
-    // console.log(recipes)
+    
     recipes.forEach(recipe => {
         const $recipeDiv = $('<div>')
             .addClass('content__recipes-list-item')
@@ -49,12 +49,12 @@ export const createRecipesFromLocalStorage = () => {
     })
 }
 
-export const createRecipe = selectedIngredients => {
+export const createRecipe = (selectedIngredients: string[]) => {
     if(selectedIngredients.length === 0) {
         return
     }
 
-    const $recipeName = $('.content__input').val()
+    const $recipeName = $('.content__input').val() as string
     const newRecipe = { id: uuidv4(), [$recipeName]: selectedIngredients }
     const $recipe = $('<div>')
         .addClass('content__recipes-list-item')

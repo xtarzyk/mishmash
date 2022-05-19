@@ -1,6 +1,6 @@
 import { Storage } from './utils'
 
-const ingredientsSet = new Set()
+const ingredientsSet: Set<string> = new Set()
 
 const createSpanBtns = () => {
     const $pencilIcon = $('<i>').addClass('fa-solid fa-pencil')
@@ -16,9 +16,9 @@ const createSpanBtns = () => {
 }
 
 export const createIngredientsListFromLocalStorage = () => {
-    const receivedIngredients = Storage.get('ingredients')
+    const receivedIngredients: Array<string> = Storage.get('ingredients')
 
-    receivedIngredients.forEach(ingredient => {
+    receivedIngredients.forEach((ingredient: string) => {
         ingredientsSet.add(ingredient)
         createIngredients()
     })
@@ -33,10 +33,11 @@ export const updateIngredientsList = () => {
 }
 
 export const createIngredients = () => {
-    ingredientsSet.add($('.content__input').val())
+    const $newValue = $('.content__input').val() as string
+    ingredientsSet.add($newValue)
     updateIngredientsList()
 
-    ingredientsSet.forEach(text => {
+    ingredientsSet.forEach((text: string) => {
         const $newListItem = $('<div>').addClass('content__list-item')
         const $spanBtns = createSpanBtns()
         $newListItem
@@ -47,14 +48,14 @@ export const createIngredients = () => {
 }
 
 const removeIngredient = event => {
-    const selectedItem = $(event.target).closest('div').text()
+    const selectedItem: string = $(event.target).closest('div').text()
     
     ingredientsSet.delete(selectedItem)
     Storage.set('ingredients', Array.from(ingredientsSet))
 }
 
 const editIngredient = event => {
-    const $editionInput = $('<input type="text">').addClass('edition-input')
+    const $editionInput = $('<input type="text">').addClass('edition-input') as JQuery<HTMLInputElement>
     const $spanBtns = createSpanBtns()
     
     ingredientsSet.delete($(event.target).closest('div').text())

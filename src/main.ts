@@ -3,8 +3,8 @@ import { createRecipe, createRecipesFromLocalStorage } from './recipes'
 import { Storage } from './utils'
 import { showRecipes } from './mishmash'
 
-let selectedIngredients = []
-let selectedView = '.header__interface-ingredients'
+let selectedIngredients: string[] = []
+let selectedView: string = '.header__interface-ingredients'
 const $input = $('<input type="text">').addClass('content__input')
 const $addingBtn = $('<span>').text('+').addClass('adding-btn')
 
@@ -26,10 +26,10 @@ const createRecipesInput = () => {
 }
 
 const showIngredients = () => {
-  const receivedIngredients = Storage.get('ingredients')
+  const receivedIngredients: string[] = Storage.get('ingredients')
   const $ingredientList = $('<div>').addClass('content__ingredients-list').appendTo('.content__list')
   
-  receivedIngredients.forEach(ingredient => {
+  receivedIngredients.forEach((ingredient: string) => {
       $('<div>')
           .addClass('content__ingredients-list-item')
           .text(ingredient)
@@ -42,10 +42,12 @@ const selectIngredient = event => {
   if (selectedIngredients.includes($(event.target).text())) {
     selectedIngredients = selectedIngredients.filter(ing => !ing.includes($(event.target).text()))
     $(event.target).css('background', '#4e9321')
+  
     if (selectedView === '.header__interface-mishmash') {
       $('.content__recipes-list').children().remove()
       showRecipes(selectedIngredients)
     }
+
     return
   }
   
@@ -56,7 +58,6 @@ const selectIngredient = event => {
     $('.content__recipes-list').children().remove()
     showRecipes(selectedIngredients)
   }
-  // console.log(selectedIngredients)
 }
 
 $('.content__header').append($addingBtn)
