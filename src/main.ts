@@ -3,8 +3,8 @@ import { createRecipe, createRecipesFromLocalStorage } from './recipes'
 import { Storage } from './utils'
 import { showRecipes } from './mishmash'
 
-let selectedIngredients: string[] = []
-let selectedView: string = '.header__interface-ingredients'
+let selectedIngredients = []
+let selectedView = '.header__interface-ingredients'
 const $input = $('<input type="text">').addClass('content__input')
 const $addingBtn = $('<span>').text('+').addClass('adding-btn')
 
@@ -26,10 +26,10 @@ const createRecipesInput = () => {
 }
 
 const showIngredients = () => {
-  const receivedIngredients: string[] = Storage.get('ingredients')
+  const receivedIngredients = Storage.get('ingredients')
   const $ingredientList = $('<div>').addClass('content__ingredients-list').appendTo('.content__list')
   
-  receivedIngredients.forEach((ingredient: string) => {
+  receivedIngredients.forEach(ingredient => {
       $('<div>')
           .addClass('content__ingredients-list-item')
           .text(ingredient)

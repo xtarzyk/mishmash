@@ -10,9 +10,9 @@ export const showRecipes = (selectedIngredients: string[]) => {
     const receivedRecipes: Array<Object> = Storage.get('recipes')
 
     result = receivedRecipes.find((recipe: Object) => {
-        const arr: Array<[]> = Object.values(recipe)[recipesIndex]
+        const recipeIngredients: Array<[]> = Object.values(recipe)[recipesIndex]
 
-        return arr.flat().every((ingredient: string) => selectedIngredients.includes(ingredient) && arr.flat().length === selectedIngredients.length)
+        return recipeIngredients.flat().every(ingredient => selectedIngredients.includes(ingredient) && recipeIngredients.flat().length === selectedIngredients.length)
     })
 
     if (result !== undefined) {

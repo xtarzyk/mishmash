@@ -4,7 +4,7 @@ export const Storage = {
 
         return JSON.parse(data)
     },
-    set(key: string, data: Array<Object>) {
+    set(key: string, data) {
         if (typeof data !== 'string') {
 
             return localStorage.setItem(key, JSON.stringify(data))
