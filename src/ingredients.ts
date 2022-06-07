@@ -24,6 +24,16 @@ export const createIngredientsListFromLocalStorage = () => {
     })
 }
 
+export const createIngredientsListFromDb = async () => {
+    const receivedIngredients = await fetch('http://localhost:3001/ingredient')
+        .then(res => res.json())
+
+    createListItems(receivedIngredients)
+
+    console.log(receivedIngredients)
+    return receivedIngredients
+}
+
 export const updateIngredientsList = () => {
     ingredientsSet.delete(undefined)
     ingredientsSet.delete(null)
@@ -32,18 +42,40 @@ export const updateIngredientsList = () => {
     $('<div>').addClass('content__list').appendTo('.content')
 }
 
-export const createIngredients = () => {
-    const newValue = $('.content__input').val() as string
+export const createIngredients = async () => {
+    const name = $('.content__input').val() as string
+    console.log(name)
+    const insertNewIngredient = await fetch('http://localhost:3001/ingredient', {
+        method: 'POST',
+        // headers: {
+        //     'Content-Type': 'application/json;charset=utf-8'
+        // },
+        body: JSON.stringify(name)
+    })
+    
+    console.log(insertNewIngredient)
+    return insertNewIngredient
+    // ingredientsSet.add(newValue)
+    // updateIngredientsList()
 
-    ingredientsSet.add(newValue)
-    updateIngredientsList()
+    // ingredientsSet.forEach(text => {
+    //     const $newListItem = $('<div>').addClass('content__list-item')
+    //     const $spanBtns = createSpanBtns()
 
-    ingredientsSet.forEach(text => {
+    //     $newListItem
+    //         .text(text)
+    //         .append($spanBtns)
+    //         .appendTo($('.content__list'))
+    // })
+}
+
+const createListItems = ingredientList => {
+    ingredientList.forEach(text => {
         const $newListItem = $('<div>').addClass('content__list-item')
         const $spanBtns = createSpanBtns()
 
         $newListItem
-            .text(text)
+            .text(text.name)
             .append($spanBtns)
             .appendTo($('.content__list'))
     })
@@ -74,4 +106,5 @@ const editIngredient = (event: JQuery.ClickEvent) => {
     })
 }
 
-createIngredientsListFromLocalStorage()
+// createIngredientsListFromLocalStorage()
+createIngredientsListFromDb()
