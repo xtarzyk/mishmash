@@ -1,6 +1,7 @@
 import { Storage } from './utils'
 
 const ingredientsSet: Set<string> = new Set()
+let ingredientList: Array<Object> = new Array()
 
 const createSpanBtns = () => {
     const $pencilIcon = $('<i>').addClass('fa-solid fa-pencil')
@@ -15,20 +16,21 @@ const createSpanBtns = () => {
     return $('<span>').append($pencilIcon, $trashIcon)
 }
 
-export const createIngredientsListFromLocalStorage = () => {
-    const receivedIngredients = Storage.get<string[]>('ingredients')
-    console.log(receivedIngredients)
-    receivedIngredients.forEach(ingredient => {
-        ingredientsSet.add(ingredient)
-        createIngredients()
-    })
-}
+// export const createIngredientsListFromLocalStorage = () => {
+//     const receivedIngredients = Storage.get<string[]>('ingredients')
+//     console.log(receivedIngredients)
+//     receivedIngredients.forEach(ingredient => {
+//         ingredientsSet.add(ingredient)
+//         createIngredients()
+//     })
+// }
 
-export const createIngredientsListFromDb = async () => {
+export const getIngredientsListFromDb = async () => {
     const receivedIngredients = await fetch('http://localhost:3001/ingredient')
         .then(res => res.json())
 
     createListItems(receivedIngredients)
+    ingredientList = ingredientList.concat(receivedIngredients)
 
     console.log(receivedIngredients)
     return receivedIngredients
@@ -47,10 +49,11 @@ export const createIngredients = async () => {
     console.log(name)
     const insertNewIngredient = await fetch('http://localhost:3001/ingredient', {
         method: 'POST',
-        // headers: {
-        //     'Content-Type': 'application/json;charset=utf-8'
-        // },
-        body: JSON.stringify(name)
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            'Access-Control-Allow-Origin': '*'
+        },
+        body: JSON.stringify({ name })
     })
     
     console.log(insertNewIngredient)
@@ -83,9 +86,31 @@ const createListItems = ingredientList => {
 
 const removeIngredient = (event: JQuery.ClickEvent) => {
     const selectedItem: string = $(event.target).closest('div').text()
+    const id = ingredientList.reduce((acc, ingredient) => {
+        const ingredientIdIndex = 0
+        const nameIndex = 1
+
+        if (Object.values(ingredient).at(nameIndex) === selectedItem) {
+            acc = Object.values(ingredient).at(ingredientIdIndex)
+        }
+        return acc
+    }, 0)
+
+    console.log(id)
+    // console.log(Object.values(removeIngredientId).at(ingredientIdIndex))
     
-    ingredientsSet.delete(selectedItem)
-    Storage.set('ingredients', Array.from(ingredientsSet))
+    const deleteIngredient = fetch('http://localhost:3001/ingredient', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            'Access-Control-Allow-Origin': '*'
+        },
+        body: JSON.stringify({ id })
+    })
+
+    return deleteIngredient
+    // ingredientsSet.delete(selectedItem)
+    // Storage.set('ingredients', Array.from(ingredientsSet))
 }
 
 const editIngredient = (event: JQuery.ClickEvent) => {
@@ -107,4 +132,4 @@ const editIngredient = (event: JQuery.ClickEvent) => {
 }
 
 // createIngredientsListFromLocalStorage()
-createIngredientsListFromDb()
+getIngredientsListFromDb()

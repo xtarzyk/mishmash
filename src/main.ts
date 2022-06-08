@@ -1,4 +1,4 @@
-import { createIngredients, createIngredientsListFromLocalStorage, createIngredientsListFromDb } from './ingredients'
+import { createIngredients, createIngredientsListFromLocalStorage, getIngredientsListFromDb } from './ingredients'
 import { createRecipe, createRecipesFromLocalStorage } from './recipes'
 import { Storage } from './utils'
 import { showRecipes } from './mishmash'
@@ -72,7 +72,7 @@ $('.header__interface-ingredients').click(() => {
   $addingBtn.click(createIngredientsInput)
   $('.content__list').children().remove()
   // createIngredientsListFromLocalStorage()
-  createIngredientsListFromDb()
+  getIngredientsListFromDb()
 })
 
 $('.header__interface-recipes').click(() => {
