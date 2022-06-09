@@ -1,6 +1,3 @@
-import { Storage } from './utils'
-
-const ingredientsSet: Set<string> = new Set()
 let ingredientList: Array<Object> = new Array()
 
 const createSpanBtns = () => {
@@ -16,14 +13,18 @@ const createSpanBtns = () => {
     return $('<span>').append($pencilIcon, $trashIcon)
 }
 
-// export const createIngredientsListFromLocalStorage = () => {
-//     const receivedIngredients = Storage.get<string[]>('ingredients')
-//     console.log(receivedIngredients)
-//     receivedIngredients.forEach(ingredient => {
-//         ingredientsSet.add(ingredient)
-//         createIngredients()
-//     })
-// }
+const getIngredientId = (selectedItem: string) => {
+    return ingredientList.reduce((acc, ingredient) => {
+        const ingredientIdIndex = 0
+        const nameIndex = 1
+
+        if (Object.values(ingredient).at(nameIndex) === selectedItem) {
+            acc = Object.values(ingredient).at(ingredientIdIndex)
+        }
+
+        return acc
+    }, 0)
+}
 
 export const getIngredientsListFromDb = async () => {
     const receivedIngredients = await fetch('http://localhost:3001/ingredient')
@@ -37,16 +38,12 @@ export const getIngredientsListFromDb = async () => {
 }
 
 export const updateIngredientsList = () => {
-    ingredientsSet.delete(undefined)
-    ingredientsSet.delete(null)
-    Storage.set('ingredients', Array.from(ingredientsSet))
     $('.content__list').remove()
     $('<div>').addClass('content__list').appendTo('.content')
 }
 
 export const createIngredients = async () => {
     const name = $('.content__input').val() as string
-    console.log(name)
     const insertNewIngredient = await fetch('http://localhost:3001/ingredient', {
         method: 'POST',
         headers: {
@@ -56,20 +53,10 @@ export const createIngredients = async () => {
         body: JSON.stringify({ name })
     })
     
-    console.log(insertNewIngredient)
+    updateIngredientsList()
+    getIngredientsListFromDb()
+
     return insertNewIngredient
-    // ingredientsSet.add(newValue)
-    // updateIngredientsList()
-
-    // ingredientsSet.forEach(text => {
-    //     const $newListItem = $('<div>').addClass('content__list-item')
-    //     const $spanBtns = createSpanBtns()
-
-    //     $newListItem
-    //         .text(text)
-    //         .append($spanBtns)
-    //         .appendTo($('.content__list'))
-    // })
 }
 
 const createListItems = ingredientList => {
@@ -86,19 +73,8 @@ const createListItems = ingredientList => {
 
 const removeIngredient = (event: JQuery.ClickEvent) => {
     const selectedItem: string = $(event.target).closest('div').text()
-    const id = ingredientList.reduce((acc, ingredient) => {
-        const ingredientIdIndex = 0
-        const nameIndex = 1
+    const id = getIngredientId(selectedItem)
 
-        if (Object.values(ingredient).at(nameIndex) === selectedItem) {
-            acc = Object.values(ingredient).at(ingredientIdIndex)
-        }
-        return acc
-    }, 0)
-
-    console.log(id)
-    // console.log(Object.values(removeIngredientId).at(ingredientIdIndex))
-    
     const deleteIngredient = fetch('http://localhost:3001/ingredient', {
         method: 'DELETE',
         headers: {
@@ -109,15 +85,26 @@ const removeIngredient = (event: JQuery.ClickEvent) => {
     })
 
     return deleteIngredient
-    // ingredientsSet.delete(selectedItem)
-    // Storage.set('ingredients', Array.from(ingredientsSet))
+}
+
+const patchIngredient = async (id, name: string) => {
+    const editedIngredient = await fetch('http://localhost:3001/ingredient', {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify({ id, name })
+    })
+
+    return editedIngredient
 }
 
 const editIngredient = (event: JQuery.ClickEvent) => {
     const $editionInput = $('<input type="text">').addClass('edition-input') as JQuery<HTMLInputElement>
     const $spanBtns = createSpanBtns()
+    const name = $(event.target).closest('div').text()
+    const id = getIngredientId(name)
     
-    ingredientsSet.delete($(event.target).closest('div').text())
     $(event.target).closest('div').text('').append($editionInput)
 
     $editionInput.change(editionEvent => {
@@ -126,10 +113,9 @@ const editIngredient = (event: JQuery.ClickEvent) => {
             .text(editionEvent.target.value)
             .append($spanBtns)
 
-        ingredientsSet.add(editionEvent.target.value)
-        Storage.set('ingredients', Array.from(ingredientsSet))
+        console.log(editionEvent.target.value)
+        patchIngredient(id, editionEvent.target.value)
     })
 }
 
-// createIngredientsListFromLocalStorage()
 getIngredientsListFromDb()

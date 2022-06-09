@@ -1,4 +1,4 @@
-import { createIngredients, createIngredientsListFromLocalStorage, getIngredientsListFromDb } from './ingredients'
+import { createIngredients, getIngredientsListFromDb, updateIngredientsList } from './ingredients'
 import { createRecipe, createRecipesFromLocalStorage } from './recipes'
 import { Storage } from './utils'
 import { showRecipes } from './mishmash'
