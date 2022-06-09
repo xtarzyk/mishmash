@@ -1,6 +1,5 @@
-import { createIngredients, getIngredientsListFromDb, updateIngredientsList } from './ingredients'
-import { createRecipe, createRecipesFromLocalStorage } from './recipes'
-import { Storage } from './utils'
+import { createIngredients, getIngredientsListFromDb, ingredientList, updateIngredientsList } from './ingredients'
+import { createRecipe, createRecipesFromDb } from './recipes'
 import { showRecipes } from './mishmash'
 
 let selectedIngredients = []
@@ -26,13 +25,14 @@ const createRecipesInput = () => {
 }
 
 const showIngredients = () => {
-  const receivedIngredients = Storage.get<string[]>('ingredients')
+  const receivedIngredients = ingredientList
+  const nameIndex = 1
   const $ingredientList = $('<div>').addClass('content__ingredients-list').appendTo('.content__list')
   
   receivedIngredients.forEach(ingredient => {
       $('<div>')
           .addClass('content__ingredients-list-item')
-          .text(ingredient)
+          .text(Object.values(ingredient).at(nameIndex))
           .click(selectIngredient)
           .appendTo($ingredientList)
   })
@@ -85,7 +85,8 @@ $('.header__interface-recipes').click(() => {
   $addingBtn.click(createRecipesInput)
   $('.content__list').children().remove()
   $('<div>').addClass('content__recipes-list').appendTo('.content__list')
-  createRecipesFromLocalStorage()
+  // createRecipesFromLocalStorage()
+  createRecipesFromDb()
 })
 
 $('.header__interface-mishmash').click(() => {

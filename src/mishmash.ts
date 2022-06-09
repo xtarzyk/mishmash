@@ -1,9 +1,9 @@
 import { Storage } from './utils'
 
 export const showRecipes = (selectedIngredients: string[]) => {
-    if (localStorage.getItem('recipes') === null) {
-        return
-    }
+    // if (localStorage.getItem('recipes') === null) {
+    //     return
+    // }
     
     let result: Object
     const recipesIndex: number = 1

@@ -1,4 +1,4 @@
-let ingredientList: Array<Object> = new Array()
+export let ingredientList: Array<Object> = new Array()
 
 const createSpanBtns = () => {
     const $pencilIcon = $('<i>').addClass('fa-solid fa-pencil')
@@ -33,7 +33,7 @@ export const getIngredientsListFromDb = async () => {
     createListItems(receivedIngredients)
     ingredientList = ingredientList.concat(receivedIngredients)
 
-    console.log(receivedIngredients)
+    // console.log(receivedIngredients)
     return receivedIngredients
 }
 
