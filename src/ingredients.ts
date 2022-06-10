@@ -13,7 +13,7 @@ const createSpanBtns = () => {
     return $('<span>').append($pencilIcon, $trashIcon)
 }
 
-const getIngredientId = (selectedItem: string) => {
+export const getIngredientId = (selectedItem: string, ingredientList: Array<Object>) => {
     return ingredientList.reduce((acc, ingredient) => {
         const ingredientIdIndex = 0
         const nameIndex = 1
@@ -26,14 +26,17 @@ const getIngredientId = (selectedItem: string) => {
     }, 0)
 }
 
-export const getIngredientsListFromDb = async () => {
-    const receivedIngredients = await fetch('http://localhost:3001/ingredient')
+export const getIngredientsFromDb = async () => {
+    return await fetch('http://localhost:3001/ingredient')
         .then(res => res.json())
+}
+
+export const createIngredientsListFromDb = async () => {
+    const receivedIngredients = await getIngredientsFromDb()
 
     createListItems(receivedIngredients)
     ingredientList = ingredientList.concat(receivedIngredients)
 
-    // console.log(receivedIngredients)
     return receivedIngredients
 }
 
@@ -54,7 +57,7 @@ export const createIngredients = async () => {
     })
     
     updateIngredientsList()
-    getIngredientsListFromDb()
+    createIngredientsListFromDb()
 
     return insertNewIngredient
 }
@@ -73,7 +76,7 @@ const createListItems = ingredientList => {
 
 const removeIngredient = (event: JQuery.ClickEvent) => {
     const selectedItem: string = $(event.target).closest('div').text()
-    const id = getIngredientId(selectedItem)
+    const id = getIngredientId(selectedItem, ingredientList)
 
     const deleteIngredient = fetch('http://localhost:3001/ingredient', {
         method: 'DELETE',
@@ -103,7 +106,7 @@ const editIngredient = (event: JQuery.ClickEvent) => {
     const $editionInput = $('<input type="text">').addClass('edition-input') as JQuery<HTMLInputElement>
     const $spanBtns = createSpanBtns()
     const name = $(event.target).closest('div').text()
-    const id = getIngredientId(name)
+    const id = getIngredientId(name, ingredientList)
     
     $(event.target).closest('div').text('').append($editionInput)
 
@@ -113,9 +116,8 @@ const editIngredient = (event: JQuery.ClickEvent) => {
             .text(editionEvent.target.value)
             .append($spanBtns)
 
-        console.log(editionEvent.target.value)
         patchIngredient(id, editionEvent.target.value)
     })
 }
 
-getIngredientsListFromDb()
+createIngredientsListFromDb()

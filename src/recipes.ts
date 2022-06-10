@@ -1,5 +1,5 @@
-import { v4 as uuidv4 } from 'uuid'
 import { Storage } from './utils'
+import { getIngredientsFromDb, getIngredientId } from './ingredients'
 
 let recipes: Array<Object> = []
 
@@ -15,7 +15,7 @@ const createTrashButton = () => {
     return $('<span>').append($trashIcon)
 }
 
-const addRecipeChildren = (array, $recipe: JQuery<HTMLElement>) => {
+const addRecipeChildren = (array: Array<string>, $recipe: JQuery<HTMLElement>) => {
     const ingredientIndex = 1
     const $trashButton = createTrashButton()
 
@@ -51,13 +51,18 @@ const addRecipeChildren = (array, $recipe: JQuery<HTMLElement>) => {
 //         addRecipeChildren(Object.values(recipe)[recipeIndex], $recipeDiv)
 //     })
 // }
+export const getRecipesFromDb = async () => {
+    return await fetch('http://localhost:3001/recipes/all')
+        .then(res => res.json())
+}
 
 export const createRecipesFromDb = async () => {
     const recipeIndex: number = 1
-    const receivedRecipes = await fetch('http://localhost:3001/recipes/all')
-        .then(res => res.json())
+    const ingredientListIndex: number = 2
+    const receivedRecipes = await getRecipesFromDb()
 
     console.log(receivedRecipes)
+    recipes.length = 0
     recipes = recipes.concat(receivedRecipes)
 
     recipes.forEach(recipe => {
@@ -66,7 +71,7 @@ export const createRecipesFromDb = async () => {
             .appendTo('.content__recipes-list')
         
         $('<h2>').text(`${Object.values(recipe)[recipeIndex]}`).appendTo($recipeDiv)
-        addRecipeChildren(Object.values(recipe)[2], $recipeDiv)
+        addRecipeChildren(Object.values(recipe)[ingredientListIndex], $recipeDiv)
     })
 }
 
@@ -76,7 +81,7 @@ export const createRecipe = (selectedIngredients: string[]) => {
     }
 
     const $recipeName = $('.content__input').val() as string
-    const newRecipe = { id: uuidv4(), [$recipeName]: selectedIngredients }
+    const newRecipe = { name: $recipeName, ingredientIds: selectedIngredients }
     const $recipe = $('<div>')
         .addClass('content__recipes-list-item')
         .appendTo('.content__recipes-list')
