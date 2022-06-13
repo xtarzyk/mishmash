@@ -2,7 +2,7 @@ import { createIngredients, createIngredientsListFromDb, ingredientList, updateI
 import { createRecipe, createRecipesFromDb } from './recipes'
 import { showRecipes } from './mishmash'
 
-let selectedIngredients = []
+let selectedIngredients: Array<string> = new Array()
 let selectedView = '.header__interface-ingredients'
 const $input = $('<input type="text">').addClass('content__input')
 const $addingBtn = $('<span>').text('+').addClass('adding-btn')

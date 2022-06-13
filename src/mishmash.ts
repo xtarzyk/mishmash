@@ -1,10 +1,12 @@
-import { getRecipesFromDb } from './recipes'
+import { getDataFromDb } from './utils'
 
-export const showRecipes = async (selectedIngredients: string[]) => {
+const allRecipesPath = 'http://localhost:3001/recipes/all'
+
+export const showRecipes = async (selectedIngredients: Array<string>) => {
     let result: Object
     const ingredientsIndex = 2
     const recipeNameIndex = 1
-    const receivedRecipes: Array<Object> = await getRecipesFromDb()
+    const receivedRecipes: Array<Object> = await getDataFromDb(allRecipesPath)
     
     result = receivedRecipes.find((recipe: Object) => {
         const recipeIngredients = Object.values(recipe)[ingredientsIndex]
