@@ -9,7 +9,7 @@ export const getDataFromDb = async (path: string) => {
         .catch(err => alert(err))
 }
 
-export const insertNewElement = async (newData, path: string) => {
+export const insertNewElement = async (body, path: string) => {
     return axios({
         method: 'POST',
         url: path,
@@ -17,7 +17,7 @@ export const insertNewElement = async (newData, path: string) => {
             'Content-Type': 'application/json;charset=utf-8',
             'Access-Control-Allow-Origin': '*'
         },
-        data: JSON.stringify(newData)
+        data: JSON.stringify(body)
     })
     .catch(err => alert(err))
 }

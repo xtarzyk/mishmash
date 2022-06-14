@@ -1,4 +1,4 @@
-import { createNewIngredient, createIngredientsListFromDb, ingredientList, updateIngredientsList } from './ingredients'
+import { createNewIngredient, createIngredientsListFromDb, ingredientList } from './ingredients'
 import { createRecipe, createRecipesFromDb } from './recipes'
 import { showRecipes } from './mishmash'
 
@@ -39,8 +39,10 @@ const showIngredients = () => {
 }
 
 const selectIngredient = (event: JQuery.ClickEvent) => {
-  if (selectedIngredients.includes(parseInt($(event.target).attr('id')))) {
-    selectedIngredients = selectedIngredients.filter(ing => ing !== (parseInt($(event.target).attr('id'))))
+  const id = parseInt($(event.target).attr('id'))
+
+  if (selectedIngredients.includes(id)) {
+    selectedIngredients = selectedIngredients.filter(ing => ing !== id)
     $(event.target).css('background', '#4e9321')
   
     if (selectedView === '.header__interface-mishmash') {
@@ -52,7 +54,7 @@ const selectIngredient = (event: JQuery.ClickEvent) => {
   }
   
   $(event.target).css('background', '#243535')
-  selectedIngredients = selectedIngredients.concat(parseInt($(event.target).attr('id')))
+  selectedIngredients = selectedIngredients.concat(id)
   if (selectedView === '.header__interface-mishmash') {
     $('.content__recipes-list').children().remove()
     showRecipes(selectedIngredients)
