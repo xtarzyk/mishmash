@@ -1,20 +1,7 @@
-import axios from "axios"
-
-export const getId = (selectedItem: string, list: Array<Object>) => {
-    return list.reduce((acc, ingredient) => {
-        const ingredientIdIndex = 0
-        const nameIndex = 1
-
-        if (Object.values(ingredient).at(nameIndex) === selectedItem) {
-            acc = Object.values(ingredient).at(ingredientIdIndex)
-        }
-
-        return acc
-    }, 0)
-}
+import axios from 'axios'
 
 export const getDataFromDb = async (path: string) => {
-    return await axios({
+    return axios({
         method: 'GET',
         url: path
     })
@@ -22,15 +9,12 @@ export const getDataFromDb = async (path: string) => {
     .catch(err => alert(err))
 }
 
-export const removeDataElement = async (event: JQuery.ClickEvent, list: Array<Object>, htmlTag: string, path: string) => {
-    const selectedItem: string = $(event.target)
+export const removeDataElement = async (event: JQuery.ClickEvent, htmlTag: string, path: string) => {
+    const selectedItem = $(event.target)
         .closest(htmlTag)
-        .clone()
-        .children()
-        .remove()
-        .end()
-        .text()
-    const id = getId(selectedItem, list)
+        .attr('id')
+
+    const id = parseInt(selectedItem)
 
     return axios(path, {
         method: 'DELETE',

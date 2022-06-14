@@ -1,8 +1,8 @@
-import { createIngredients, createIngredientsListFromDb, ingredientList, updateIngredientsList } from './ingredients'
+import { createNewIngredient, createIngredientsListFromDb, ingredientList, updateIngredientsList } from './ingredients'
 import { createRecipe, createRecipesFromDb } from './recipes'
 import { showRecipes } from './mishmash'
 
-let selectedIngredients: Array<string> = new Array()
+let selectedIngredients: Array<number> = new Array()
 let selectedView = '.header__interface-ingredients'
 const $input = $('<input type="text">').addClass('content__input')
 const $addingBtn = $('<span>').text('+').addClass('adding-btn')
@@ -10,7 +10,7 @@ const $addingBtn = $('<span>').text('+').addClass('adding-btn')
 const createIngredientsInput = () => {
   $('.content__header').append($input.attr('placeholder', 'Add ingredient...'))
   $input.change(() => {
-    createIngredients()
+    createNewIngredient()
     $input.val('')
   })
 }
@@ -26,21 +26,21 @@ const createRecipesInput = () => {
 
 const showIngredients = () => {
   const receivedIngredients = ingredientList
-  const nameIndex = 1
   const $ingredientList = $('<div>').addClass('content__ingredients-list').appendTo('.content__list')
   
   receivedIngredients.forEach(ingredient => {
       $('<div>')
           .addClass('content__ingredients-list-item')
-          .text(Object.values(ingredient).at(nameIndex))
+          .text(ingredient.name)
+          .attr('id', `${ingredient.ingredientId}`)
           .click(selectIngredient)
           .appendTo($ingredientList)
   })
 }
 
 const selectIngredient = (event: JQuery.ClickEvent) => {
-  if (selectedIngredients.includes($(event.target).text())) {
-    selectedIngredients = selectedIngredients.filter(ing => !ing.includes($(event.target).text()))
+  if (selectedIngredients.includes(parseInt($(event.target).attr('id')))) {
+    selectedIngredients = selectedIngredients.filter(ing => !ing.includes(parseInt($(event.target).attr('id'))))
     $(event.target).css('background', '#4e9321')
   
     if (selectedView === '.header__interface-mishmash') {
@@ -52,8 +52,7 @@ const selectIngredient = (event: JQuery.ClickEvent) => {
   }
   
   $(event.target).css('background', '#243535')
-  selectedIngredients = selectedIngredients.concat($(event.target).text())
-  
+  selectedIngredients = selectedIngredients.concat(parseInt($(event.target).attr('id')))
   if (selectedView === '.header__interface-mishmash') {
     $('.content__recipes-list').children().remove()
     showRecipes(selectedIngredients)
