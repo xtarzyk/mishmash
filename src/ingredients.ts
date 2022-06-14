@@ -58,7 +58,7 @@ const createListItems = ingredientList => {
 }
 
 const patchIngredient = async (id, name: string) => {
-    const editedIngredient = await axios({
+    const editedIngredient = axios({
         method: 'PATCH',
         url: ingredientsPath,
         headers: {

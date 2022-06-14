@@ -8,10 +8,7 @@ export const showRecipes = async (selectedIngredients: Array<number>) => {
     const result = receivedRecipes.find((recipe: Recipe) => {
         const recipeIngredients = recipe.ingredients
         return recipeIngredients
-            .every(ingredient => {
-                return selectedIngredients.includes(ingredient.ingredientId) && recipeIngredients.length === selectedIngredients.length
-            })
-            
+            .every(ingredient => selectedIngredients.includes(ingredient.ingredientId))  
 })
 
     if (result !== undefined) {

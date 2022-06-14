@@ -25,7 +25,6 @@ const addRecipesChildren = (array: Array<Ingredient>, $recipe: JQuery<HTMLElemen
     $trashButton.appendTo($recipe)
 
     array.forEach(ingredient => {
-        // const ingredientName: string = ingredient.name
         const $recipeIngredient = $('<p>').addClass('recipes-list-item__ingredients-element').text(ingredient.name)
 
         $requiredIngredients
