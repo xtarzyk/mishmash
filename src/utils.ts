@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Ingredient, Recipe } from './types'
+import { IngredientBody, RecipeBody } from './types'
 
 axios.defaults.baseURL = 'http://localhost:3001'
 
@@ -10,7 +10,7 @@ export const getDataFromDb = async (path: string) => {
         .catch(err => alert(err))
 }
 
-export const insertNewElement = async (body: Record<'body', Ingredient | Recipe>, path: string) => {
+export const insertNewElement = async (body: Record<'body', IngredientBody | RecipeBody>, path: string) => {
     return axios({
         method: 'POST',
         url: path,

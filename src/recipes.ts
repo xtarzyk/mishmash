@@ -1,5 +1,5 @@
 import { ingredientList } from './ingredients'
-import { Ingredient, Recipe } from './types'
+import { Ingredient, Recipe, RecipeBody } from './types'
 import { getDataFromDb, insertNewElement, removeDataElement } from './utils'
 
 export const allRecipesPath = '/recipes/all'
@@ -77,11 +77,11 @@ export const createRecipe = async (selectedIngredientsId: Array<number>) => {
         .appendTo('.content__recipes-list')
         .text($recipeName)
 
-    const newRecipe = { 
+    const newRecipe: RecipeBody = { 
         name: $recipeName,
         ingredientIds: selectedIngredientsId
     }
-    const insertNewRecipe = await insertNewElement(newRecipe, recipesPath)
+    const insertNewRecipe = await insertNewElement({'body': newRecipe}, recipesPath)
 
     addNewRecipeChildren(selectedIngredientsId, $recipe)
 

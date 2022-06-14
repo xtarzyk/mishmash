@@ -36,7 +36,7 @@ export const updateIngredientsList = () => {
 
 export const createNewIngredient = async () => {
     const name = $('.content__input').val() as string
-    const newIngredient = await insertNewElement({ name }, ingredientsPath)
+    const newIngredient = await insertNewElement({'body': { name }}, ingredientsPath)
     
     updateIngredientsList()
     createIngredientsListFromDb()
