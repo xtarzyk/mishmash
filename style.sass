@@ -1,8 +1,10 @@
+@use 'colors'
+    
 body
     margin: 0
     padding: 0
     box-sizing: border-box
-    background: #243535
+    background: colors.$dark-green
 
 div
     display: flex
@@ -15,7 +17,7 @@ div
     flex-direction: column
     align-items: center
     color: white
-    background: #00642d
+    background: colors.$main-green
     margin: 20px
     padding: 20px
     border-radius: 25px
@@ -25,7 +27,7 @@ div
         letter-spacing: 2px
 
     &__interface
-        background: #243535
+        background: colors.$dark-green
         border-radius: 25px
 
     &__interface button
@@ -33,19 +35,19 @@ div
         padding: 20px
         width: 150px
         color: white
-        background: #4e93217e
+        background: colors.$button-green
         border: none
         border-radius: 25px
         font-size: 20px
         letter-spacing: 1px
 
     &__interface button:hover
-        background: #4e9321
+        background: colors.$light-green
         cursor: pointer
 
 .content
     flex-direction: column
-    background: #00642d
+    background: colors.$main-green
     color: white
     border-radius: 25px
     margin: 20px
@@ -68,12 +70,12 @@ div
         justify-content: space-between
         width: 300px
         margin: 10px 0
-        background: #4e9321
+        background: colors.$light-green
         border-radius: 15px
         padding: 10px
 
     &__list-item span
-        background: #243535
+        background: colors.$dark-green
         border-radius: 15px
 
     &__list-item i
@@ -81,7 +83,7 @@ div
         cursor: pointer
 
     &__list-item i:hover
-        color: #4e9321
+        color: colors.$light-green
 
     &__ingredients-list
         font-size: 24px
@@ -91,11 +93,11 @@ div
         cursor: pointer
         margin: 0 10px 10px
         padding: 10px
-        background: #4e9321
+        background: colors.$light-green
         border-radius: 15px
 
     &__ingredients-list-item:hover
-        background: #356714
+        background: colors.$hover-green
 
     &__recipes-list
         margin: 20px
@@ -106,7 +108,7 @@ div
         justify-content: space-between
         width: 300px
         margin: 10px 0
-        background: #243535
+        background: colors.$dark-green
         border-radius: 15px
         padding: 10px
     
@@ -120,11 +122,11 @@ div
     width: 50px
     height: 50px
     font-size: 40px
-    border: 10px solid #243535
+    border: 10px solid colors.$dark-green
     border-radius: 50%
     color: white
-    background: #4e9321
+    background: colors.$light-green
 
 .adding-btn:hover
-    background: #356714
+    background: colors.$hover-green
     cursor: pointer

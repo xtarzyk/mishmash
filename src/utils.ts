@@ -1,11 +1,24 @@
 import axios from 'axios'
 
+axios.defaults.baseURL = 'http://localhost:3001'
+
 export const getDataFromDb = async (path: string) => {
+    return axios
+        .get(path)
+        .then(res => res.data)
+        .catch(err => alert(err))
+}
+
+export const insertNewElement = async (newData, path: string) => {
     return axios({
-        method: 'GET',
-        url: path
+        method: 'POST',
+        url: path,
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            'Access-Control-Allow-Origin': '*'
+        },
+        data: JSON.stringify(newData)
     })
-    .then(res => res.data)
     .catch(err => alert(err))
 }
 
@@ -16,7 +29,7 @@ export const removeDataElement = async (event: JQuery.ClickEvent, htmlTag: strin
 
     const id = parseInt(selectedItem)
 
-    return axios(path, {
+    return await axios(path, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json;charset=utf-8',

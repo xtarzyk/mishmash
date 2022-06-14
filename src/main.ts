@@ -2,7 +2,7 @@ import { createNewIngredient, createIngredientsListFromDb, ingredientList, updat
 import { createRecipe, createRecipesFromDb } from './recipes'
 import { showRecipes } from './mishmash'
 
-let selectedIngredients: Array<number> = new Array()
+let selectedIngredients: Array<number> = []
 let selectedView = '.header__interface-ingredients'
 const $input = $('<input type="text">').addClass('content__input')
 const $addingBtn = $('<span>').text('+').addClass('adding-btn')
@@ -40,7 +40,7 @@ const showIngredients = () => {
 
 const selectIngredient = (event: JQuery.ClickEvent) => {
   if (selectedIngredients.includes(parseInt($(event.target).attr('id')))) {
-    selectedIngredients = selectedIngredients.filter(ing => !ing.includes(parseInt($(event.target).attr('id'))))
+    selectedIngredients = selectedIngredients.filter(ing => ing !== (parseInt($(event.target).attr('id'))))
     $(event.target).css('background', '#4e9321')
   
     if (selectedView === '.header__interface-mishmash') {

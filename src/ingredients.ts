@@ -1,11 +1,11 @@
 import axios from 'axios'
-import { Ingredient } from './types/ingredient'
-import { getDataFromDb, removeDataElement } from './utils'
+import { Ingredient } from './types'
+import { getDataFromDb, insertNewElement, removeDataElement } from './utils'
 
-const ingredientsPath = 'http://localhost:3001/ingredient'
+const ingredientsPath = '/ingredient'
 const ingredientNameTag = 'div'
 
-export let ingredientList: Array<Ingredient> = new Array()
+export let ingredientList: Array<Ingredient> = []
 
 const createSpanBtns = () => {
     const $pencilIcon = $('<i>').addClass('fa-solid fa-pencil')
@@ -36,21 +36,12 @@ export const updateIngredientsList = () => {
 
 export const createNewIngredient = async () => {
     const name = $('.content__input').val() as string
-    const insertNewIngredient = await axios({
-        method: 'POST',
-        url: ingredientsPath,
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8',
-            'Access-Control-Allow-Origin': '*'
-        },
-        data: JSON.stringify({ name })
-    })
-    .catch(err => alert(err))
+    const newIngredient = await insertNewElement({ name }, ingredientsPath)
     
     updateIngredientsList()
     createIngredientsListFromDb()
 
-    return insertNewIngredient
+    return newIngredient
 }
 
 const createListItems = ingredientList => {
