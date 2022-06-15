@@ -81,7 +81,7 @@ export const createRecipe = async (selectedIngredientsId: Array<number>) => {
         name: $recipeName,
         ingredientIds: selectedIngredientsId
     }
-    const insertNewRecipe = await insertNewElement({'body': newRecipe}, recipesPath)
+    const insertNewRecipe = await insertNewElement(newRecipe, recipesPath)
 
     addNewRecipeChildren(selectedIngredientsId, $recipe)
 

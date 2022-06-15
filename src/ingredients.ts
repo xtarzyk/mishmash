@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Ingredient } from './types'
+import { Ingredient, IngredientBody } from './types'
 import { getDataFromDb, insertNewElement, removeDataElement } from './utils'
 
 const ingredientsPath = '/ingredient'
@@ -36,7 +36,7 @@ export const updateIngredientsList = () => {
 
 export const createNewIngredient = async () => {
     const name = $('.content__input').val() as string
-    const newIngredient = await insertNewElement({'body': { name }}, ingredientsPath)
+    const newIngredient = await insertNewElement({ name }, ingredientsPath)
     
     updateIngredientsList()
     createIngredientsListFromDb()

@@ -10,7 +10,7 @@ export const getDataFromDb = async (path: string) => {
         .catch(err => alert(err))
 }
 
-export const insertNewElement = async (body: Record<'body', IngredientBody | RecipeBody>, path: string) => {
+export const insertNewElement = async (body: IngredientBody | RecipeBody, path: string) => {
     return axios({
         method: 'POST',
         url: path,
