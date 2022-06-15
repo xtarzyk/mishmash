@@ -3,14 +3,14 @@ import { IngredientBody, RecipeBody } from './types'
 
 axios.defaults.baseURL = 'http://localhost:3001'
 
-export const getDataFromDb = async (path: string) => {
+export const getDataFromDb = (path: string) => {
     return axios
         .get(path)
         .then(res => res.data)
         .catch(err => alert(err))
 }
 
-export const insertNewElement = async (body: IngredientBody | RecipeBody, path: string) => {
+export const insertNewElement = (body: IngredientBody | RecipeBody, path: string) => {
     return axios({
         method: 'POST',
         url: path,

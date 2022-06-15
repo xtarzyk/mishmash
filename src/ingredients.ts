@@ -57,7 +57,7 @@ const createListItems = ingredientList => {
     })
 }
 
-const patchIngredient = async (id, name: string) => {
+const patchIngredient = async (id: number, name: string) => {
     const editedIngredient = axios({
         method: 'PATCH',
         url: ingredientsPath,
@@ -85,7 +85,7 @@ const editIngredient = (event: JQuery.ClickEvent) => {
             .text(editionEvent.target.value)
             .append($spanBtns)
 
-        patchIngredient(id, editionEvent.target.value)
+        patchIngredient(parseInt(id), editionEvent.target.value)
     })
 }
 

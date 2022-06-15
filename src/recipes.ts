@@ -18,13 +18,13 @@ const createTrashButton = () => {
     return $('<span>').append($trashIcon)
 }
 
-const addRecipesChildren = (array: Array<Ingredient>, $recipe: JQuery<HTMLElement>) => {
+const addRecipesChildren = (recipeIngredients: Array<Ingredient>, $recipe: JQuery<HTMLElement>) => {
     const $trashButton = createTrashButton()
     const $requiredIngredients = $('<section>').addClass('recipes-list-item__ingredients')
 
     $trashButton.appendTo($recipe)
 
-    array.forEach(ingredient => {
+    recipeIngredients.forEach(ingredient => {
         const $recipeIngredient = $('<p>').addClass('recipes-list-item__ingredients-element').text(ingredient.name)
 
         $requiredIngredients
