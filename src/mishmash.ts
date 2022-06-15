@@ -1,29 +1,29 @@
-import { Storage } from './utils'
+import { Recipe } from './types'
+import { getDataFromDb } from './utils'
+import { allRecipesPath } from './recipes'
 
-export const showRecipes = (selectedIngredients: string[]) => {
-    if (localStorage.getItem('recipes') === null) {
-        return
-    }
+export const showRecipes = async (selectedIngredients: Array<number>) => {
+    const receivedRecipes: Array<Recipe> = await getDataFromDb(allRecipesPath)
     
-    let result: Object
-    const recipesIndex: number = 1
-    const receivedRecipes = Storage.get<Array<Object>>('recipes')
-
-    result = receivedRecipes.find((recipe: Object) => {
-        const recipeIngredients = Object.values(recipe)[recipesIndex]
-
+    const result = receivedRecipes.find((recipe: Recipe) => {
+        const recipeIngredients = recipe.ingredients
         return recipeIngredients
-            .flat()
-            .every(ingredient => selectedIngredients.includes(ingredient) && recipeIngredients.flat().length === selectedIngredients.length)
-    })
+            .every(ingredient => selectedIngredients.includes(ingredient.ingredientId))  
+})
 
     if (result !== undefined) {
-        $('.content__recipes-list').children().remove()
-        $('<h2>').text(`${Object.keys(result)[recipesIndex]}`).appendTo('.content__recipes-list')
-        result = {}
-        
+        $('.content__recipes-list')
+            .children()
+            .remove()
+
+        $('<h2>')
+            .text(`${result.recipeName}`)
+            .appendTo('.content__recipes-list')
+
         return
     }
-    $('.content__recipes-list').children().remove()
-}
 
+    $('.content__recipes-list')
+        .children()
+        .remove()
+}

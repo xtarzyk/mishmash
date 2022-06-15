@@ -1,14 +1,41 @@
-export const Storage = {
-    get<T>(key: string): T{
-        const data = localStorage.getItem(key)
-        
-        return JSON.parse(data) as T
-    },
-    set(key: string, data: any) {
-        if (typeof data !== 'string') {
+import axios from 'axios'
+import { IngredientBody, RecipeBody } from './types'
 
-            return localStorage.setItem(key, JSON.stringify(data))
-        }
-        localStorage.setItem(key, data)
-    }
+axios.defaults.baseURL = 'http://localhost:3001'
+
+export const getDataFromDb = (path: string) => {
+    return axios
+        .get(path)
+        .then(res => res.data)
+        .catch(err => alert(err))
+}
+
+export const insertNewElement = (body: IngredientBody | RecipeBody, path: string) => {
+    return axios({
+        method: 'POST',
+        url: path,
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            'Access-Control-Allow-Origin': '*'
+        },
+        data: JSON.stringify(body)
+    })
+    .catch(err => alert(err))
+}
+
+export const removeDataElement = async (event: JQuery.ClickEvent, htmlTag: string, path: string) => {
+    const selectedItem = $(event.target)
+        .closest(htmlTag)
+        .attr('id')
+
+    const id = parseInt(selectedItem)
+
+    return await axios(path, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            'Access-Control-Allow-Origin': '*'
+        },
+        data: JSON.stringify({ id })
+    }).catch(err => alert(err))
 }

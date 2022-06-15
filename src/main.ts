@@ -1,9 +1,8 @@
-import { createIngredients, createIngredientsListFromLocalStorage, getIngredientsListFromDb } from './ingredients'
-import { createRecipe, createRecipesFromLocalStorage } from './recipes'
-import { Storage } from './utils'
+import { createNewIngredient, createIngredientsListFromDb, ingredientList } from './ingredients'
+import { createRecipe, createRecipesFromDb } from './recipes'
 import { showRecipes } from './mishmash'
 
-let selectedIngredients = []
+let selectedIngredientsIDs: Array<number> = []
 let selectedView = '.header__interface-ingredients'
 const $input = $('<input type="text">').addClass('content__input')
 const $addingBtn = $('<span>').text('+').addClass('adding-btn')
@@ -11,7 +10,7 @@ const $addingBtn = $('<span>').text('+').addClass('adding-btn')
 const createIngredientsInput = () => {
   $('.content__header').append($input.attr('placeholder', 'Add ingredient...'))
   $input.change(() => {
-    createIngredients()
+    createNewIngredient()
     $input.val('')
   })
 }
@@ -19,44 +18,45 @@ const createIngredientsInput = () => {
 const createRecipesInput = () => {
   $('.content__header').append($input.attr('placeholder', 'Add recipes...'))
   $input.change(() => {
-    createRecipe(selectedIngredients)
+    createRecipe(selectedIngredientsIDs)
     $input.val('')
   })
   showIngredients()
 }
 
 const showIngredients = () => {
-  const receivedIngredients = Storage.get<string[]>('ingredients')
   const $ingredientList = $('<div>').addClass('content__ingredients-list').appendTo('.content__list')
   
-  receivedIngredients.forEach(ingredient => {
+  ingredientList.forEach(ingredient => {
       $('<div>')
           .addClass('content__ingredients-list-item')
-          .text(ingredient)
+          .text(ingredient.name)
+          .attr('id', `${ingredient.ingredientId}`)
           .click(selectIngredient)
           .appendTo($ingredientList)
   })
 }
 
 const selectIngredient = (event: JQuery.ClickEvent) => {
-  if (selectedIngredients.includes($(event.target).text())) {
-    selectedIngredients = selectedIngredients.filter(ing => !ing.includes($(event.target).text()))
+  const id = parseInt($(event.target).attr('id'))
+
+  if (selectedIngredientsIDs.includes(id)) {
+    selectedIngredientsIDs = selectedIngredientsIDs.filter(ing => ing !== id)
     $(event.target).css('background', '#4e9321')
   
     if (selectedView === '.header__interface-mishmash') {
       $('.content__recipes-list').children().remove()
-      showRecipes(selectedIngredients)
+      showRecipes(selectedIngredientsIDs)
     }
 
     return
   }
   
   $(event.target).css('background', '#243535')
-  selectedIngredients = selectedIngredients.concat($(event.target).text())
-  
+  selectedIngredientsIDs = selectedIngredientsIDs.concat(id)
   if (selectedView === '.header__interface-mishmash') {
     $('.content__recipes-list').children().remove()
-    showRecipes(selectedIngredients)
+    showRecipes(selectedIngredientsIDs)
   }
 }
 
@@ -71,8 +71,7 @@ $('.header__interface-ingredients').click(() => {
   $addingBtn.off()
   $addingBtn.click(createIngredientsInput)
   $('.content__list').children().remove()
-  // createIngredientsListFromLocalStorage()
-  getIngredientsListFromDb()
+  createIngredientsListFromDb()
 })
 
 $('.header__interface-recipes').click(() => {
@@ -85,7 +84,7 @@ $('.header__interface-recipes').click(() => {
   $addingBtn.click(createRecipesInput)
   $('.content__list').children().remove()
   $('<div>').addClass('content__recipes-list').appendTo('.content__list')
-  createRecipesFromLocalStorage()
+  createRecipesFromDb()
 })
 
 $('.header__interface-mishmash').click(() => {

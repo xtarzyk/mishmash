@@ -1,14 +1,18 @@
-import { Storage } from './utils'
+import axios from 'axios'
+import { Ingredient, IngredientBody } from './types'
+import { getDataFromDb, insertNewElement, removeDataElement } from './utils'
 
-const ingredientsSet: Set<string> = new Set()
-let ingredientList: Array<Object> = new Array()
+const ingredientsPath = '/ingredient'
+const ingredientNameTag = 'div'
+
+export let ingredientList: Array<Ingredient> = []
 
 const createSpanBtns = () => {
     const $pencilIcon = $('<i>').addClass('fa-solid fa-pencil')
     const $trashIcon = $('<i>').addClass('fa-solid fa-trash-can')
     
     $trashIcon.click((event: JQuery.ClickEvent) => {
-        removeIngredient(event)
+        removeDataElement(event, ingredientNameTag, ingredientsPath)
         $(event.target).parentsUntil($('.content__list')).remove()
     })
     $pencilIcon.click(editIngredient)
@@ -16,108 +20,63 @@ const createSpanBtns = () => {
     return $('<span>').append($pencilIcon, $trashIcon)
 }
 
-// export const createIngredientsListFromLocalStorage = () => {
-//     const receivedIngredients = Storage.get<string[]>('ingredients')
-//     console.log(receivedIngredients)
-//     receivedIngredients.forEach(ingredient => {
-//         ingredientsSet.add(ingredient)
-//         createIngredients()
-//     })
-// }
-
-export const getIngredientsListFromDb = async () => {
-    const receivedIngredients = await fetch('http://localhost:3001/ingredient')
-        .then(res => res.json())
+export const createIngredientsListFromDb = async () => {
+    const receivedIngredients = await getDataFromDb(ingredientsPath)
 
     createListItems(receivedIngredients)
     ingredientList = ingredientList.concat(receivedIngredients)
 
-    console.log(receivedIngredients)
     return receivedIngredients
 }
 
 export const updateIngredientsList = () => {
-    ingredientsSet.delete(undefined)
-    ingredientsSet.delete(null)
-    Storage.set('ingredients', Array.from(ingredientsSet))
     $('.content__list').remove()
     $('<div>').addClass('content__list').appendTo('.content')
 }
 
-export const createIngredients = async () => {
+export const createNewIngredient = async () => {
     const name = $('.content__input').val() as string
-    console.log(name)
-    const insertNewIngredient = await fetch('http://localhost:3001/ingredient', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8',
-            'Access-Control-Allow-Origin': '*'
-        },
-        body: JSON.stringify({ name })
-    })
+    const newIngredient = await insertNewElement({ name }, ingredientsPath)
     
-    console.log(insertNewIngredient)
-    return insertNewIngredient
-    // ingredientsSet.add(newValue)
-    // updateIngredientsList()
+    updateIngredientsList()
+    createIngredientsListFromDb()
 
-    // ingredientsSet.forEach(text => {
-    //     const $newListItem = $('<div>').addClass('content__list-item')
-    //     const $spanBtns = createSpanBtns()
-
-    //     $newListItem
-    //         .text(text)
-    //         .append($spanBtns)
-    //         .appendTo($('.content__list'))
-    // })
+    return newIngredient
 }
 
 const createListItems = ingredientList => {
-    ingredientList.forEach(text => {
+    ingredientList.forEach(ingredient => {
         const $newListItem = $('<div>').addClass('content__list-item')
         const $spanBtns = createSpanBtns()
 
         $newListItem
-            .text(text.name)
+            .text(ingredient.name)
+            .attr('id', `${ingredient.ingredientId}`)
             .append($spanBtns)
             .appendTo($('.content__list'))
     })
 }
 
-const removeIngredient = (event: JQuery.ClickEvent) => {
-    const selectedItem: string = $(event.target).closest('div').text()
-    const id = ingredientList.reduce((acc, ingredient) => {
-        const ingredientIdIndex = 0
-        const nameIndex = 1
-
-        if (Object.values(ingredient).at(nameIndex) === selectedItem) {
-            acc = Object.values(ingredient).at(ingredientIdIndex)
-        }
-        return acc
-    }, 0)
-
-    console.log(id)
-    // console.log(Object.values(removeIngredientId).at(ingredientIdIndex))
-    
-    const deleteIngredient = fetch('http://localhost:3001/ingredient', {
-        method: 'DELETE',
+const patchIngredient = async (id: number, name: string) => {
+    const editedIngredient = axios({
+        method: 'PATCH',
+        url: ingredientsPath,
         headers: {
-            'Content-Type': 'application/json;charset=utf-8',
-            'Access-Control-Allow-Origin': '*'
+            'Content-Type': 'application/json;charset=utf-8'
         },
-        body: JSON.stringify({ id })
+        data: JSON.stringify({ id, name })
     })
 
-    return deleteIngredient
-    // ingredientsSet.delete(selectedItem)
-    // Storage.set('ingredients', Array.from(ingredientsSet))
+    return editedIngredient
 }
 
 const editIngredient = (event: JQuery.ClickEvent) => {
     const $editionInput = $('<input type="text">').addClass('edition-input') as JQuery<HTMLInputElement>
     const $spanBtns = createSpanBtns()
+    const id = $(event.target)
+        .closest('div')
+        .attr('id')
     
-    ingredientsSet.delete($(event.target).closest('div').text())
     $(event.target).closest('div').text('').append($editionInput)
 
     $editionInput.change(editionEvent => {
@@ -126,10 +85,8 @@ const editIngredient = (event: JQuery.ClickEvent) => {
             .text(editionEvent.target.value)
             .append($spanBtns)
 
-        ingredientsSet.add(editionEvent.target.value)
-        Storage.set('ingredients', Array.from(ingredientsSet))
+        patchIngredient(parseInt(id), editionEvent.target.value)
     })
 }
 
-// createIngredientsListFromLocalStorage()
-getIngredientsListFromDb()
+createIngredientsListFromDb()
